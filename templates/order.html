@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="m-4 p-4">
+    <div class="col-lg-3 mx-auto border rounded p-4">
+      <h4 class="alert alert-light border rounded text-center">Add New Order</h4>
+<form method="post" novalidate>{% csrf_token %}
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add</button>
+
+</form>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends 'menu/userindex.html' %}
+
+{% block content %}
+  <h1>Orders List</h1>
+  <ul>
+    {% for c in order %}
+      <li>{{ c.name }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

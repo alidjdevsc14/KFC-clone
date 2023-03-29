@@ -1,0 +1,12 @@
+{% extends 'menu/userindex.html' %}
+
+{% block content %}
+  <h1>Items List</h1>
+  <ul>
+    {% for c in item %}
+      <li style="display: flex">
+        <a href=""><br><img height="100px" width="100px" src="{{ c.image.url }}" alt="None"><br>{{ c.name }}<br>Rs. {{ c.price }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
