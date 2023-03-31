@@ -1,14 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import ItemForm, CategoryForm, SubCategoryForm, OrderForm
 from .models import Category, SubCategory, Orders, Item
 
-
 def index(request):
-    return render(request, 'index.html')
+    if request.user.is_staff:
+        return render(request, 'index.html')
+    return redirect('home')
+
+# def userindex(request):
+#     return render(request, 'menu/userindex.html')
 
 
 def userindex(request):
-    return render(request, 'menu/userindex.html')
+    if request.user.is_staff:
+        return redirect('admin')
+    category = Category.objects.all()
+    return render(request, 'menu/category_list.html', {'category': category})
 
 
 # def category(request):
@@ -65,8 +72,8 @@ def orders(request):
     return render(request, "order.html", context={'form': form})
 
 
-def category_list(request):
-    category = Category.objects.all()
+def category_list(request, pk):
+    category = Category.objects.filter(category__id=pk)
     return render(request, 'menu/category_list.html', {'category': category})
 
 
@@ -76,9 +83,18 @@ def sub_category_list(request, pk):
     return render(request, 'menu/sub_category_list.html', {'sub_category': sub_category})
 
 
+# def item_list(request):
+#     item = Item.objects.all()
+#     return render(request, 'menu/item_list.html', {'item': item})
+
+#
 def item_list(request, pk):
-    item = Item.objects.filter(sub_category__id=pk)
+    item = Item.objects.filter(category__id=pk)
     return render(request, 'menu/item_list.html', {'item': item})
+
+def item_detail(request, item_id):
+    item = Item.objects.get(pk=item_id)
+    return render(request, 'menu/item_detail.html', {'item': item})
 
 
 def order_list(request):

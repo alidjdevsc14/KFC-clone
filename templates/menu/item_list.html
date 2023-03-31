@@ -1,12 +1,44 @@
 {% extends 'menu/userindex.html' %}
 
 {% block content %}
-  <h1>Items List</h1>
-  <ul>
-    {% for c in item %}
-      <li style="display: flex">
-        <a href=""><br><img height="100px" width="100px" src="{{ c.image.url }}" alt="None"><br>{{ c.name }}<br>Rs. {{ c.price }}</a>
-      </li>
-    {% endfor %}
-  </ul>
+<h1>Items List</h1>
+<div class="container">
+    <div class="row row-cols-4 g-1">
+        {% for c in item %}
+        <a href="{% url 'itemdetail' c.id %}">
+            <div class="card d-flex flex-column ml-4 mb-4">
+                <div class="card-body">
+                    <img class="card-image" height="225px" width="225px" src="{{ c.image.url }}" alt="None">
+                    <h4 class="card-title">
+                        {{ c.name }}
+
+                    </h4>
+                    <p class="card-text">
+                        {{ c.description }}
+
+                    </p>
+                    <h5 class="card-text"><strong>Rs:</strong>
+                        {{ c.price }}
+
+
+                    </h5>
+
+
+                </div>
+                <button>
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </a>
+
+
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
+<div>
+    <br><a href=""><img height="100px" width="100px" src="{{ c.image.url }}" alt="None"><br>{{ c.name }}<br>Rs.
+    {{ c.price }}</a>
+</div>

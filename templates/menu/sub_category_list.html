@@ -2,12 +2,14 @@
 
 {% block content %}
 <h1>Sub Category List</h1>
-<ul>
+<div class="container">
+    <div class="row row-cols-6 g-3">
     {% for c in sub_category %}
-    <li style="display: flex">
-        <a href="{% url 'item_list' c.id %}"><br><img height="50px" width="50px" src="{{ c.image.url }}" alt="None"><br>{{ c.name }}</a>
-    </li>
+    <div>
+        <a href="{% url 'item_list' c.id %}"><br><img height="100px" width="100px" src="{{ c.image.url }}" alt="None"><br>{{ c.name }}</a>
+    </div>
 <!--    <li>{{ c.name }}</li>-->
     {% endfor %}
-</ul>
+</div>
+</div>
 {% endblock %}

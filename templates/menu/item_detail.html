@@ -1,0 +1,30 @@
+{% extends 'menu/userindex.html' %}
+
+{% block content %}
+
+<div class="card d-flex flex-column ml-4 mb-4 w-25">
+    <div class="card-body">
+        <img class="card-image" height="225px" width="225px" src="{{ item.image.url }}" alt="None">
+        <h4 class="card-title">
+            {{ item.name }}
+
+        </h4>
+        <p class="card-text">
+            {{ item.description }}
+
+        </p>
+        <h5 class="card-text"><strong>Rs:</strong>
+            {{ item.price }}
+
+
+        </h5>
+
+
+    </div>
+    <button>
+        Add to Cart
+    </button>
+
+</div>
+
+{% endblock %}

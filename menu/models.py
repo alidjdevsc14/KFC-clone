@@ -34,7 +34,8 @@ class SubCategory(models.Model):
 class Item(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)
     image = models.ImageField(upload_to='images/')
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=False, default=None, )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, default=None, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField()
     created_at = models.DateTimeField(default=datetime.now, blank=True)

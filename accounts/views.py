@@ -13,6 +13,8 @@ def index(request):
 def login_view(request):
     context = {}
     form = LogInForm()
+    if request.user.is_authenticated:
+        return redirect('index')
     if request.method == 'POST':
 
         form = LogInForm(data=request.POST)
@@ -36,6 +38,8 @@ def login_view(request):
 def userlogin(request):
     context = {}
     form = LogInForm()
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'POST':
 
         form = LogInForm(data=request.POST)

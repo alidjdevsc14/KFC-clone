@@ -1,14 +1,21 @@
 {% extends 'menu/userindex.html' %}
 
 {% block content %}
-<h1>Category List</h1>
-<ul>
-    {% for c in category %}
-    <li style="display: flex">
-        <a href="{% url 'sub_category_list' c.id %}"><br><img height="50px" width="50px" src="{{ c.image.url }}" alt="None"><br>{{ c.name }}</a>
+<h1>Browse Categories----------------------------------------------------------------</h1>
+<div class="container">
+    <div class="row row-cols-6 g-3">
+        {% for c in category %}
+        <div>
+            <a href="{% url 'item_list' c.id %}"><br><img height="150px" width="150px" src="{{ c.image.url }}"
+                                                                  alt="None"><br></a>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+<br>
+<br>
+<br>
+<h1>Top Selling--------------------------------------------------------------------------</h1>
 
-
-    </li><br>
-    {% endfor %}
-</ul>
 {% endblock %}
