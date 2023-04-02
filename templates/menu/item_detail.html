@@ -21,9 +21,11 @@
 
 
     </div>
-    <button>
-        Add to Cart
-    </button>
+     <button>
+                <a href="{% url 'cart_add' item.id %}" class="cart-btn product-model-sidebar-open-btn  align-item-center">
+                    Add to Cart
+                </a>
+                    </button>
 
 </div>
 

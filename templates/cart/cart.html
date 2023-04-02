@@ -1,0 +1,39 @@
+{% extends 'menu/userindex.html' %}
+
+{% load cart_tag %}
+
+{% block content %}
+
+
+
+<div class="card d-flex flex-column ml-4 mb-4 w-25">
+    {% for key,value in request.session.cart.items %}
+
+    <div class="card-body">
+        <img class="card-image" height="225px" width="225px" src="/{{ value.image.url }}" alt="None">
+        <h4 class="card-title">
+            {{ value.name }}
+
+        </h4>
+        <p class="card-text">
+            {{ value.description }}
+
+        </p>
+        <h5 class="card-text"><strong>Rs:</strong>
+            {{ value.price }}
+
+
+        </h5>
+
+
+    </div>
+    {% endfor %}
+
+    <button>
+        Add to Cart
+    </button>
+
+</div>
+
+
+{% endblock content %}

@@ -5,35 +5,38 @@
 <div class="container">
     <div class="row row-cols-4 g-1">
         {% for c in item %}
-        <a href="{% url 'itemdetail' c.id %}">
-            <div class="card d-flex flex-column ml-4 mb-4">
-                <div class="card-body">
+        <div class="card d-flex flex-column ml-4 mb-4">
+
+            <div class="card-body">
+                <a href="{% url 'itemdetail' c.id %}">
+
                     <img class="card-image" height="225px" width="225px" src="{{ c.image.url }}" alt="None">
+
                     <h4 class="card-title">
                         {{ c.name }}
 
                     </h4>
-                    <p class="card-text">
-                        {{ c.description }}
+                    <div class="card-text">
+                        <p>
+                            {{ c.description }}
 
-                    </p>
-                    <h5 class="card-text"><strong>Rs:</strong>
-                        {{ c.price }}
+                        </p>
+                        <h5><strong>Rs:</strong>
+                            {{ c.price }}
+                        </h5>
+                    </div>
+                </a>
 
-
-                    </h5>
-
-
-                </div>
-                <button>
-                    Add to Cart
-                </button>
 
             </div>
+            <button>
+                <a href="{% url 'cart_add' c.id %}"
+                   class="cart-btn product-model-sidebar-open-btn  align-item-center">
+                    Add to Cart
+                </a>
+            </button>
 
-        </a>
-
-
+        </div>
         {% endfor %}
     </div>
 </div>

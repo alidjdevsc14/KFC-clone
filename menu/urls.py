@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('', views.userindex, name='home'),
     path('index/', views.index, name='admin'),
@@ -12,7 +13,24 @@ urlpatterns = [
     path('sub_category_list/<int:pk>/', views.sub_category_list, name='sub_category_list'),
     path('subcategory/', views.subcategory, name='subcategory'),
     path('item/', views.item, name='item'),
+    path('item/<int:id>/', views.items, name='items'),
     path('itemdetail/<int:item_id>/', views.item_detail, name='itemdetail'),
-    path('order/', views.orders, name='order'),
+    path('order/', views.order_list, name='order'),
 
+    # cart urls
+
+    path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
+    path('cart/item_clear/<int:id>/', views.item_clear, name='item_clear'),
+    path('cart/item_increment/<int:id>/',
+         views.item_increment, name='item_increment'),
+    path('cart/item_decrement/<int:id>/',
+         views.item_decrement, name='item_decrement'),
+    path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
+    path('cart/cart-detail/', views.cart_detail, name='cart_detail'),
+
+
+    # checkout
+
+    path('check-out/', views.checkout, name='checkout'),
+    path('checkout1/', views.checkout1, name='checkout1'),
 ]

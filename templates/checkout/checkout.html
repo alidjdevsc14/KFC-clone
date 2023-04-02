@@ -1,4 +1,4 @@
-{% extends 'index.html' %}
+{% extends 'menu/userindex.html' %}
 {% load cart_tag %}
 
 {% block content %}
@@ -13,9 +13,7 @@
         <th>Price</th>
         <th>Quantity</th>
         <th>Total</th>
-        <th>Order By</th>
         <th>Status</th>
-        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -26,30 +24,14 @@
         <td>{{ item.price }}</td>
         <td>{{ item.quantity }}</td>
         <td>{{ item.price|multiply:item.quantity }}</td>
-        <td>{{ item.customer }}</td>
-
         {% if item.delivered %}
         <td><small class="badge bg-success">Completed</small></td>
         {%else%}
         <td><small class="badge bg-warning">Pending</small></td>
-        <td>
-
-
-                        <form method="post" action="{% url 'order' %}" >
-                            {% csrf_token %}
-                            <input type="hidden" name="item" value="{{ item.id }}">
-                            <button type="submit" class="btn btn-sm text text-info">Click to Complete</button>
-                        </form>
-
-
-
-        </td>
         {% endif %}
     </tr>
     {% endfor %}
 
     </tbody>
 </table>
-
-
-{% endblock content %}
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'menu/userindex.html' %}
+
+{% load cart_tag %}
+
+{% block content %}
+
+<section class="cart-area pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="/checkout1/" method="post">{% csrf_token %}
+                    <div class="table-content table-responsive">
+                        <table class="table" border="1">
+                            <thead>
+                            <tr>
+                                <th class="product-thumbnail">Images</th>
+                                <th class="cart-product-name">Product</th>
+                                <th class="product-price">Unit Price</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-subtotal">Total</th>
+                                <th class="product-remove">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for key,value in request.session.cart.items %}
+                            <tr id="id{{value.id}}">
+                                <td class="product-thumbnail"><a href=""><img width="100px" height="100"
+                                                                              src=" {{value.image}} " alt=""></a></td>
+                                <td class="product-name"><a href="">{{ value.name }}</a></td>
+                                <td class="product-price"><span
+                                        class="amount"><strong>Rs:</strong> {{ value.price }}</span></td>
+                                <td class="product-quantity w-25">
+                                    <div class="row ">
+                                        <div class="col-4">
+                                            <a href="{% url 'item_decrement' value.product_id %}#id{{value.id}}"
+                                               class="text-center">-</a>
+                                        </div>
+                                        <div class="col-4">
+                                            <label>
+                                                <input type="text" value="{{value.quantity}}"
+                                                       class="form-control border-0 text-center">
+                                            </label>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="{% url 'item_increment' value.product_id %}#id{{value.id}}"
+                                               class="text-center">+</a>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td class="product-subtotal"><span class="amount"><strong>Rs:</strong> {{ value.price|multiply:value.quantity }}</span>
+                                </td>
+                                <td class="product-remove"><a href="{% url 'item_clear' key %}"><i
+                                        class="fa fa-trash-o"></i></a></td>
+                            </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button>
+                        <a class="tp-btn-h1" name="update_cart" href="{% url 'cart_clear' %}">Clear Cart</a>
+                    </button>
+
+                    <div class="row justify-content-end">
+                        <div class="col-md-5">
+                            <div class="cart-page-total">
+                                <h2>Cart totals</h2>
+                                <ul class="mb-20">
+                                    <!--                                    <li>Subtotal <span>$250.00</span></li>-->
+                                    <li>Total <strong><span>Rs:{{cart_total_amount}}</span></strong></li>
+                                </ul>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form action="/checkout1/" method="post">{% csrf_token %}
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input type="text" name="name" class="form-control" required="">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="">Phone</label>
+                        <input type="text" name="phone" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Address</label>
+                        <input type="text" name="address" id="" class="form-control" required="">
+                    </div>
+                    <button type="submit" class="btn btn-outline-info col-lg-5 fa-pull-right mt-2">Place an Order
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

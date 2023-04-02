@@ -1,11 +1,17 @@
-from django.shortcuts import render, redirect
+from pyexpat.errors import messages
+
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ItemForm, CategoryForm, SubCategoryForm, OrderForm
 from .models import Category, SubCategory, Orders, Item
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
+
 
 def index(request):
     if request.user.is_staff:
         return render(request, 'index.html')
     return redirect('home')
+
 
 # def userindex(request):
 #     return render(request, 'menu/userindex.html')
@@ -36,9 +42,14 @@ def category(request):
             # Do something with the saved form data
     else:
         form = CategoryForm()
+    category = Category.objects.all()
+
     context = {
         'form': form,
+        'category': category,
+
     }
+
     return render(request, 'category.html', context)
 
 
@@ -58,8 +69,20 @@ def item(request):
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+    item = Item.objects.all()
 
-    return render(request, "item.html", context={'form': form})
+    return render(request, "item.html", context={'form': form, 'item': item})
+
+
+def items(request, id):
+    form = ItemForm()
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    item = Item.objects.filter(category__id=id)
+
+    return render(request, "item.html", context={'form': form, 'item': item})
 
 
 def orders(request):
@@ -92,11 +115,96 @@ def item_list(request, pk):
     item = Item.objects.filter(category__id=pk)
     return render(request, 'menu/item_list.html', {'item': item})
 
+
 def item_detail(request, item_id):
     item = Item.objects.get(pk=item_id)
     return render(request, 'menu/item_detail.html', {'item': item})
 
 
 def order_list(request):
-    order = Orders.objects.all()
-    return render(request, 'menu/order_list.html', {'order': order})
+    all_order = Orders.objects.all()
+    if request.method == 'POST':
+        order_id = request.POST.get('item')
+        order = get_object_or_404(Orders, id=order_id)
+        order.delivered = True
+        order.save()
+
+    return render(request, 'order.html', {'order': all_order})
+
+
+# cart views
+
+
+# @login_required(login_url="/users/login")
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Item.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("cart_detail")
+
+
+# @login_required(login_url="/users/login")
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Item.objects.get(id=id)
+    cart.remove(product)
+    return redirect("cart_detail")
+
+
+# @login_required(login_url="/users/login")
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Item.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("cart_detail")
+
+
+# @login_required(login_url="/users/login")
+def item_decrement(request, id):
+    cart = Cart(request)
+    product = Item.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect("cart_detail")
+
+
+# @login_required(login_url="/users/login")
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("cart_detail")
+
+
+def cart_detail(request):
+    return render(request, 'cart/cart1.html')
+
+
+@login_required(login_url="/userlogin")
+def checkout1(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+        user = request.user
+        cart = request.session.get('cart')
+        print(user, cart)
+        if cart:
+            products = Item.objects.filter(id__in=(list(cart.keys())))
+            for product in products:
+                order = Orders(item=product, customer=user, quantity=(cart.get(str(product.id))).get('quantity'),
+                               price=product.price,
+                               name=name,
+                               address=address,
+                               phone=phone)
+
+                order.save()
+            request.session['cart'] = {}
+        else:
+            # messages.warning(request, 'No Product Found in Cart!')
+            return redirect('checkout1')
+
+    return redirect('checkout')
+
+
+def checkout(request):
+    order = Orders.objects.filter(customer=request.user)
+    return render(request, 'checkout/checkout.html', {'order': order})

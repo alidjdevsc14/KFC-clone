@@ -1,18 +1,58 @@
 {% extends 'index.html' %}
 {% block content %}
+<h1>Items List</h1>
+<div class="container">
+    <div class="row row-cols-4 g-1">
+        {% for c in item %}
+        <div class="card d-flex flex-column ml-4 mb-4">
+
+            <div class="card-body">
+                <a href="{% url 'itemdetail' c.id %}">
+
+                    <img class="card-image" height="225px" width="225px" src="{{ c.image.url }}" alt="None">
+
+                    <h4 class="card-title">
+                        {{ c.name }}
+
+                    </h4>
+                    <div class="card-text">
+                        <p>
+                            {{ c.description }}
+
+                        </p>
+                        <h5><strong>Rs:</strong>
+                            {{ c.price }}
+                        </h5>
+                    </div>
+                </a>
+
+
+            </div>
+            <button>
+                <a href="{% url 'cart_add' c.id %}"
+                   class="cart-btn product-model-sidebar-open-btn  align-item-center">
+                    Add to Cart
+                </a>
+            </button>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 <div class="container-fluid">
-  <div class="m-4 p-4">
-    <div class="col-lg-3 mx-auto border rounded p-4">
-      <h4 class="alert alert-light border rounded text-center">Add New Item</h4>
-<form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add</button>
+    <div class="m-4 p-4">
+        <div class="col-lg-3 mx-auto border rounded p-4">
+            <h4 class="alert alert-light border rounded text-center">Add New Item</h4>
+            <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                    <button type="submit">Add</button>
+                </div>
 
-</form>
+            </form>
+        </div>
     </div>
-  </div>
 
 </div>
 
