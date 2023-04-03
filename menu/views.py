@@ -63,17 +63,46 @@ def subcategory(request):
     return render(request, "subcategory.html", context={'form': form})
 
 
+def all_item(request):
+    item = Item.objects.all()
+    return render(request, "item.html", context={'item': item})
+
+
+# add item from staff user
+def add_category(request):
+    form = CategoryForm()
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # category = obj.category.id
+
+            return redirect('category')
+
+    item = Item.objects.all()
+
+    return render(request, "add_category.html", context={'form': form, 'item': item})
+
+
+# add item from staff user
 def item(request):
     form = ItemForm()
+
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            obj = form.save()
+            category = obj.category.id
+
+            return redirect('items', category)
+
     item = Item.objects.all()
 
-    return render(request, "item.html", context={'form': form, 'item': item})
+    return render(request, "add_item.html", context={'form': form, 'item': item})
 
 
+# for user
 def items(request, id):
     form = ItemForm()
     if request.method == 'POST':
@@ -208,3 +237,28 @@ def checkout1(request):
 def checkout(request):
     order = Orders.objects.filter(customer=request.user)
     return render(request, 'checkout/checkout.html', {'order': order})
+
+
+# Edit items
+def edit_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    form = ItemForm(instance=item)
+    if request.method == 'POST':
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            item.save()
+            return redirect('edit_item', item_id=item.id)
+    return render(request, 'edit_item.html', {'form': form})
+
+
+# Edit Category
+def edit_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    form = CategoryForm(instance=category)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('category')
+    return render(request, 'edit_category.html', {'form': form})
+

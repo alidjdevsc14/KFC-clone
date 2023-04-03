@@ -4,12 +4,10 @@
 <div class="container-fluid">
     <div class="m-4 p-4">
         <div class="col-lg-3 mx-auto border rounded p-4">
-            <h4 class="alert alert-light border rounded text-center">Edit Item</h4>
+            <h4 class="alert alert-light border rounded text-center">Add New Item</h4>
             <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
-                <div class="form-group">
-                    {{ form.as_p }}
-                    <button type="submit">Save</button>
-                </div>
+                {{ form.as_p }}
+                <button type="submit">Add Item</button>
 
             </form>
         </div>

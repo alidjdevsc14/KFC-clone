@@ -1,31 +1,31 @@
 {% extends 'index.html' %}
 {% block content %}
-
+<button class="float-right">
+    <a href="{% url 'add_category' %}"
+       class="cart-btn product-model-sidebar-open-btn  align-item-center">
+        Add Category
+    </a>
+</button>
+<br>
+<br>
+<br>
 <h1>Browse Categories----------------------------------------------------------------</h1>
 <div class="container">
     <div class="row row-cols-6 g-3">
         {% for c in category %}
         <div>
             <a href="{% url 'items' c.id %}"><br><img height="150px" width="150px" src="{{ c.image.url }}"
-                                                                  alt="None"><br></a>
+                                                      alt="None"><br></a>
+            <button>
+            <a href="{% url 'edit_category' c.id %}">Edit Category
+            </a>
+        </button>
         </div>
+
         <br>
         {% endfor %}
     </div>
 </div>
 
-<div class="container-fluid">
-  <div class="m-4 p-4">
-    <div class="col-lg-3 mx-auto border rounded p-4">
-      <h4 class="alert alert-light border rounded text-center">Add New Category</h4>
-<form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add</button>
-
-</form>
-    </div>
-  </div>
-
-</div>
 
 {% endblock content %}
