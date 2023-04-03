@@ -1,4 +1,4 @@
-from pyexpat.errors import messages
+from django.contrib import messages
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ItemForm, CategoryForm, SubCategoryForm, OrderForm
@@ -135,11 +135,6 @@ def sub_category_list(request, pk):
     return render(request, 'menu/sub_category_list.html', {'sub_category': sub_category})
 
 
-# def item_list(request):
-#     item = Item.objects.all()
-#     return render(request, 'menu/item_list.html', {'item': item})
-
-#
 def item_list(request, pk):
     item = Item.objects.filter(category__id=pk)
     return render(request, 'menu/item_list.html', {'item': item})
@@ -152,6 +147,7 @@ def item_detail(request, item_id):
 
 def order_list(request):
     all_order = Orders.objects.all()
+    # print(all_order.delivered)
     if request.method == 'POST':
         order_id = request.POST.get('item')
         order = get_object_or_404(Orders, id=order_id)
@@ -209,6 +205,16 @@ def cart_detail(request):
 
 @login_required(login_url="/userlogin")
 def checkout1(request):
+    order = Orders.objects.filter(customer=request.user, delivered=False)
+    print('order---------------------------------------------')
+    print(order)
+    print('order---------------------------------------------')
+    # print(order.delivered)
+    if not order:
+        print('Empty')
+    else:
+        print('Not empty')
+
     if request.method == 'POST':
         name = request.POST.get('name')
         address = request.POST.get('address')
@@ -228,12 +234,13 @@ def checkout1(request):
                 order.save()
             request.session['cart'] = {}
         else:
-            # messages.warning(request, 'No Product Found in Cart!')
+            messages.warning(request, 'No Product Found in Cart!')
             return redirect('checkout1')
 
     return redirect('checkout')
 
 
+@login_required(login_url="/userlogin")
 def checkout(request):
     order = Orders.objects.filter(customer=request.user)
     return render(request, 'checkout/checkout.html', {'order': order})
@@ -247,6 +254,9 @@ def edit_item(request, item_id):
         form = ItemForm(request.POST, instance=item)
         if form.is_valid():
             item.save()
+            messages.success(request, 'Item Updated!')
+
+            # return render(request, 'item.html', {'form': form})
             return redirect('edit_item', item_id=item.id)
     return render(request, 'edit_item.html', {'form': form})
 
@@ -261,4 +271,3 @@ def edit_category(request, category_id):
             form.save()
             return redirect('category')
     return render(request, 'edit_category.html', {'form': form})
-

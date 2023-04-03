@@ -61,20 +61,34 @@ def userlogin(request):
 
 
 def signup(request):
-    context = {}
-    form = RegisterForm(request.POST)
-    if form.is_valid():
-        form.save()
+    if not request.user.is_authenticated:
+        context = {}
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        messages.error(request, 'You are already logged in. Please log out to sign up!')
+
+        return redirect('login')
 
     context['form'] = form
     return render(request, 'signup.html', context)
 
 
 def usersignup(request):
-    context = {}
-    form = RegisterForm(request.POST)
-    if form.is_valid():
-        form.save()
+    if not request.user.is_authenticated:
+        context = {}
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        messages.error(request, 'You are already logged in. Please log out to sign up!')
+
+        return redirect('login')
 
     context['form'] = form
     return render(request, 'menu/usersignup.html', context)
