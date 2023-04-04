@@ -2,6 +2,24 @@
 {% load cart_tag %}
 
 {% block content %}
+
+{% if message.tags == "success" %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% elif message.tags == "error" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+
 <hr>
 
 <h3>Order Summary</h3>
@@ -13,6 +31,7 @@
         <th>Price</th>
         <th>Quantity</th>
         <th>Total</th>
+        <th>Order Type</th>
         <th>Status</th>
     </tr>
     </thead>
@@ -24,11 +43,17 @@
         <td>{{ item.price }}</td>
         <td>{{ item.quantity }}</td>
         <td>{{ item.price|multiply:item.quantity }}</td>
+        {% if item.is_pickup == 1 %}
+        <td><strong class="">Pick-Up</strong></td>
+        {% elif item.is_pickup == 2 %}
+        <td><strong class="">Delivery</strong></td>
+        {% endif %}
         {% if item.delivered %}
         <td><small class="badge bg-success">Completed</small></td>
         {%else%}
         <td><small class="badge bg-warning">Pending</small></td>
         {% endif %}
+
     </tr>
     {% endfor %}
 

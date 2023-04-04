@@ -4,6 +4,22 @@
 
 {% block content %}
 
+{% if message.tags == "success" %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% elif message.tags == "error" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
 <section class="cart-area pt-120 pb-120">
     <div class="container">
         <div class="row">
@@ -88,6 +104,19 @@
                     <div class="form-group">
                         <label for="">Address</label>
                         <input type="text" name="address" id="" class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-check-label" for="id_is_pickup">Delivery Option:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="is_pickup" id="id_is_pickup_pickup"
+                                   value="1" {% if order.is_pickup %}checked{% endif %}>
+                            <label class="form-check-label" for="id_is_pickup_pickup">Pick-up</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="is_pickup" id="id_is_pickup_delivery"
+                                   value="2" {% if not order.is_pickup %}checked{% endif %}>
+                            <label class="form-check-label" for="id_is_pickup_delivery">Delivery</label>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-outline-info col-lg-5 fa-pull-right mt-2">Place an Order
                     </button>

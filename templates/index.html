@@ -59,11 +59,25 @@
                 <a class="nav-link" href="{% url 'order'%}">Orders</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link align-item-center" href="{% url 'user-admin'%}">User</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
             </li>
         </ul>
 
         <div class="form-inline my-2 my-lg-0 ">
+            {% comment %}
+            <p class="btn  my-2 my-sm-0 nav-item border-0 ">
+                <a class="nav-link" href="{% url 'cart_detail' %}">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span class="count">{{request.session.cart|length}}</span>
+                    <span class="text"></span>
+                </a>
+                <span style="color: #c4dce8">{{request.session.cart|length}} Item in Cart</span>
+
+            </p>
+            {% endcomment %}
 
 
             <button class="btn btn-secondary my-2 my-sm-0 nav-item dropdown ">

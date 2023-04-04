@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import RadioSelect
+
 from .models import Item, Category, SubCategory, Orders
 
 
@@ -27,6 +29,9 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Orders
         fields = '__all__'
+        widgets = {
+            'is_pickup': RadioSelect(),
+        }
         # exclude = ['created_at']
 
 

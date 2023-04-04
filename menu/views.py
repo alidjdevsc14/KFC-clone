@@ -24,6 +24,11 @@ def userindex(request):
     return render(request, 'menu/category_list.html', {'category': category})
 
 
+def user_admin(request):
+    category = Category.objects.all()
+    return render(request, 'menu/category_list.html', {'category': category})
+
+
 # def category(request):
 #     form = CategoryForm()
 #     if request.method == 'POST or FILES':
@@ -210,32 +215,69 @@ def checkout1(request):
     print(order)
     print('order---------------------------------------------')
     # print(order.delivered)
-    if not order:
-        print('Empty')
-    else:
-        print('Not empty')
+    # if not order:
+    #     if request.method == 'POST':
+    #         name = request.POST.get('name')
+    #         address = request.POST.get('address')
+    #         phone = request.POST.get('phone')
+    #         user = request.user
+    #         cart = request.session.get('cart')
+    #         print(user, cart)
+    #         if not order and cart:
+    #             products = Item.objects.filter(id__in=(list(cart.keys())))
+    #             for product in products:
+    #                 order = Orders(item=product, customer=user, quantity=(cart.get(str(product.id))).get('quantity'),
+    #                                price=product.price,
+    #                                name=name,
+    #                                address=address,
+    #                                phone=phone)
+    #
+    #                 order.save()
+    #             request.session['cart'] = {}
+    #         else:
+    #             messages.warning(request, 'No Product Found in Cart!')
+    #             return redirect('checkout1')
+    #
+    #     return redirect('checkout')
+    # else:
+    #     print('Not empty')
+    #     # messages.warning(request, 'You Have already order in pending!')
+    #     messages.success(request, 'You Have already order in pending!')
+    #     return redirect('checkout')
 
     if request.method == 'POST':
         name = request.POST.get('name')
         address = request.POST.get('address')
         phone = request.POST.get('phone')
+        is_pickup = request.POST.get('is_pickup')
         user = request.user
         cart = request.session.get('cart')
         print(user, cart)
         if cart:
             products = Item.objects.filter(id__in=(list(cart.keys())))
-            for product in products:
-                order = Orders(item=product, customer=user, quantity=(cart.get(str(product.id))).get('quantity'),
-                               price=product.price,
-                               name=name,
-                               address=address,
-                               phone=phone)
+            if not order:
 
-                order.save()
-            request.session['cart'] = {}
+                for product in products:
+                    order = Orders(item=product, customer=user, quantity=(cart.get(str(product.id))).get('quantity'),
+                                   price=product.price,
+                                   name=name,
+                                   address=address,
+                                   phone=phone,
+                                   is_pickup=is_pickup)
+
+                    order.save()
+                request.session['cart'] = {}
+            else:
+                print('Not empty')
+                messages.error(request, 'You Have already order in pending!')
+                # messages.success(request, 'You Have already order in pending!')
+                return redirect('checkout')
+
         else:
-            messages.warning(request, 'No Product Found in Cart!')
-            return redirect('checkout1')
+            # messages.warning(request, 'No Product Found in Cart!')
+            # messages.success(request, 'No Product Found in Cart!')
+            messages.error(request, 'No Product Found in Cart!')
+            return redirect('cart_detail')
 
     return redirect('checkout')
 

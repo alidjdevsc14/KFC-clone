@@ -52,6 +52,13 @@ class Item(models.Model):
 
 
 class Orders(models.Model):
+    PICKUP = 1
+    DELIVERY = 2
+    DELIVERY_CHOICES = (
+        (PICKUP, 'Pick-up'),
+        (DELIVERY, 'Delivery'),
+    )
+    is_pickup = models.IntegerField(choices=DELIVERY_CHOICES)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     # price = models.ForeignKey(Item, on_delete=models.CASCADE)
