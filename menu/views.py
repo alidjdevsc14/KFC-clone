@@ -313,3 +313,4 @@ def edit_category(request, category_id):
             form.save()
             return redirect('category')
     return render(request, 'edit_category.html', {'form': form})
+
