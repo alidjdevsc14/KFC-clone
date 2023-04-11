@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<h1>Top Selling Items</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Item</th>
+        <th>Total Orders</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.item__name }}</td>
+        <td>{{ order.total_orders }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h1>Top Selling Items</h1>
+<div class="container">
+    <div class="row row-cols-4 g-1">
+        {% for order in orders %}
+        <div class="card d-flex flex-column ml-4 mb-4">
+
+            <div class="card-body">
+                    {{ order.item__image }}
+                <a href="">
+                    <img class="card-image" height="225px" width="225px" src="{{ order.item__image.url }}" alt="None">
+
+                    <h4 class="card-title">
+                        {{ order.item__name }}
+
+                    </h4>
+                    <div class="card-text">
+                        <p>
+                            {{ order.item__description }}
+
+                        </p>
+                        <h5><strong>Rs:</strong>
+                            {{ order.item__price }}
+                        </h5>
+                    </div>
+                </a>
+
+
+            </div>
+            <button>
+                <a href=""
+                   class="cart-btn product-model-sidebar-open-btn  align-item-center">
+                    Add to Cart
+                </a>
+            </button>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}
+

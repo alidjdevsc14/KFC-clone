@@ -24,6 +24,7 @@ urlpatterns = [
     # cart urls
 
     path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
+    path('cart/add/<int:id>/', views.pre_order_add, name='pre_order_add'),
     path('cart/item_clear/<int:id>/', views.item_clear, name='item_clear'),
     path('cart/item_increment/<int:id>/',
          views.item_increment, name='item_increment'),
@@ -39,4 +40,6 @@ urlpatterns = [
     path('checkout1/', views.checkout1, name='checkout1'),
 
     path('items/edit/<int:item_id>/', views.edit_item, name='edit_item'),
+    path('top-selling-items/', views.top_selling_item, name='top-selling-items'),
+
 ]

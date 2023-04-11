@@ -32,6 +32,7 @@
         <th>Quantity</th>
         <th>Total</th>
         <th>Order Type</th>
+        <th>Pre Order</th>
         <th>Status</th>
     </tr>
     </thead>
@@ -48,6 +49,14 @@
         {% elif item.is_pickup == 2 %}
         <td><strong class="">Delivery</strong></td>
         {% endif %}
+
+        {% if item.pre_order %}
+        <td>✔️󠁟󠁟</td>
+        {%else%}
+        <td>---</td>
+        {% endif %}
+
+
         {% if item.delivered %}
         <td><small class="badge bg-success">Completed</small></td>
         {%else%}

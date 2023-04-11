@@ -15,6 +15,7 @@
         <th>Total</th>
         <th>Order By</th>
         <th>Order Type</th>
+        <th>Pre Order</th>
         <th>Status</th>
         <th>Action</th>
     </tr>
@@ -33,22 +34,21 @@
         {% elif item.is_pickup == 2 %}
         <td><strong class="">Delivery</strong></td>
         {% endif %}
-
+        {% if item.pre_order %}
+        <td>✔️󠁟󠁟</td>
+        {%else%}
+        <td>---</td>
+        {% endif %}
         {% if item.delivered %}
         <td><small class="badge bg-success">Completed</small></td>
         {%else%}
         <td><small class="badge bg-warning">Pending</small></td>
         <td>
-
-
-                        <form method="post" action="{% url 'order' %}" >
-                            {% csrf_token %}
-                            <input type="hidden" name="item" value="{{ item.id }}">
-                            <button type="submit" class="btn btn-sm text text-info">Click to Complete</button>
-                        </form>
-
-
-
+            <form method="post" action="{% url 'order' %}">
+                {% csrf_token %}
+                <input type="hidden" name="item" value="{{ item.id }}">
+                <button type="submit" class="btn btn-sm text text-info">Click to Complete</button>
+            </form>
         </td>
         {% endif %}
     </tr>

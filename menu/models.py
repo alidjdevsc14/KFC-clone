@@ -38,14 +38,14 @@ class Item(models.Model):
     # sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, default=None, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField()
+    quantity = models.PositiveIntegerField()
+    pre_item = models.IntegerField(default=0)
+    sold = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
-
-    # @staticmethod
-    # def get_all_item():
-    #     return Item.objects.all()
 
     def __str__(self):
         return str(self.name)
+
 
     class Meta:
         verbose_name_plural = 'Item'
@@ -61,9 +61,9 @@ class Orders(models.Model):
     is_pickup = models.IntegerField(choices=DELIVERY_CHOICES)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    # price = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     price = models.IntegerField()
+    pre_order = models.BooleanField(default=False)
     name = models.CharField(max_length=50, default='', blank=True)
     address = models.CharField(max_length=50, default='', blank=True)
     phone = models.CharField(max_length=50, default='', blank=True)

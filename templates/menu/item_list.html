@@ -29,13 +29,23 @@
 
 
             </div>
+            {% if c.quantity > 0 %}
+
             <button>
                 <a href="{% url 'cart_add' c.id %}"
                    class="cart-btn product-model-sidebar-open-btn  align-item-center">
                     Add to Cart
                 </a>
             </button>
-
+            {% else %}
+            <p class="p-2 badge  ">Sorry, this Item is currently unavailable.</p>
+            <button>
+                <a href="{% url 'pre_order_add' c.id %}"
+                   class="cart-btn product-model-sidebar-open-btn  align-item-center">
+                    Pre-Order Now
+                </a>
+            </button>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
