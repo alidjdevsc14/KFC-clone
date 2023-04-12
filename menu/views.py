@@ -250,7 +250,8 @@ def checkout1(request, product__id=None):
 
                             # order.save()
                         if total != 0:
-                            messages.error(request, f"Sorry..! {order.item} has only {total} items in stock.Bjt we have moved your order in Pre Order.")
+                            messages.error(request, f"Sorry..! {order.item} has only {total} items in stock.But we have moved your order in Pre Order.")
+                            order.pre_order = True
                             order.save()
                             # return redirect('cart_detail')
                         if total == 0:
@@ -260,7 +261,7 @@ def checkout1(request, product__id=None):
                     # print(order.quantity, 'order quantity---------------')
                     # print(order.item.quantity, 'order item quantity---------------')
                     # item = Item.objects.get(product__id=id)
-                    if order.item.quantity > order.quantity:
+                    if order.item.quantity >= order.quantity:
                         order.item.quantity = order.item.quantity - order.quantity
                         order.item.sold = order.item.sold + order.quantity
                         order.item.save()

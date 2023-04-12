@@ -41,7 +41,7 @@ class Item(models.Model):
     quantity = models.PositiveIntegerField()
     pre_item = models.IntegerField(default=0)
     sold = models.IntegerField(default=0)
-    created_at = models.DateTimeField(default=datetime.now, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):
         return str(self.name)
@@ -67,7 +67,7 @@ class Orders(models.Model):
     name = models.CharField(max_length=50, default='', blank=True)
     address = models.CharField(max_length=50, default='', blank=True)
     phone = models.CharField(max_length=50, default='', blank=True)
-    date = models.DateTimeField(default=datetime.now)
+    date = models.DateTimeField(auto_now_add=True)
     delivered = models.BooleanField(default=False)
 
     def __str__(self):
